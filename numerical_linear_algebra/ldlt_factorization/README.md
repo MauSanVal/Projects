@@ -1,35 +1,98 @@
-# Descomposición Matricial $LDL^T$
+# LDLᵀ Factorization
 
-Una implementación explicita en Python del algoritmo de **factorización $LDL^T$** (Cholesky modificada) para matrices simétricas reales.
+This project implements the **$LDL^T$ factorization** for real symmetric matrices.
 
-##  Descripción General
+The purpose is to study how the structure of a symmetric matrix can be exploited to obtain a factorization into triangular and diagonal factors.
 
-La descomposición $LDL^T$ factoriza una matriz simétrica real $A \in \mathbb{R}^{n \times n}$ en el producto de:
-- Una matriz triangular inferior unitaria $L$ ($L_{i,i} = 1$).
-- Una matriz diagonal $D$.
-- La traspuesta de la matriz triangular inferior $L^T$.
+## Mathematical Background
 
-$$\mathbf{A} = \mathbf{L} \mathbf{D} \mathbf{L}^T$$
+For a suitable symmetric matrix $A$,
 
-A diferencia de la descomposición estándar de Cholesky ($LL^T$), este método **evita el cálculo de raíces cuadradas**, reduciendo la carga computacional y permitiendo trabajar con matrices definidas o semidefinidas positivas.
+```math
+A = LDL^T
+```
 
----
+where:
 
-##  Formulación Matemática
+- $L$ is lower triangular with ones on the diagonal.
+- $D$ is diagonal.
+- $L^T$ is the transpose of $L$.
 
-El algoritmo evalúa las siguientes relaciones iterativas columna por columna para $j = 0, 1, \dots, n-1$:
+Unlike the standard Cholesky factorization,
 
-1. **Elementos diagonales de $D$:**
-   $$D_{j,j} = A_{j,j} - \sum_{k=0}^{j-1} L_{j,k}^2 D_{k,k}$$
+```math
+A = LL^T
+```
 
-2. **Elementos subdiagonales de $L$ ($i > j$):**
-   $$L_{i,j} = \frac{1}{D_{j,j}} \left( A_{i,j} - \sum_{k=0}^{j-1} L_{i,k} L_{j,k} D_{k,k} \right)$$
+the $LDL^T$ factorization does not require square roots during the factorization process.
 
----
+## Algorithm
 
-##  Estructura del Repositorio
+The implementation computes the diagonal entries of $D$ using
+
+```math
+D_{jj}
+=
+A_{jj}
+-
+\sum_{k=0}^{j-1}
+L_{jk}^2D_{kk}
+```
+
+For $i>j$, the entries of $L$ are computed from
+
+```math
+L_{ij}
+=
+\frac{
+A_{ij}
+-
+\sum_{k=0}^{j-1}
+L_{ik}L_{jk}D_{kk}
+}{
+D_{jj}
+}
+```
+
+The process is carried out column by column.
+
+## Verification
+
+After computing $L$ and $D$, the implementation reconstructs the original matrix through
+
+```math
+LDL^T
+```
+
+and compares the result with $A$.
+
+This provides a direct numerical verification of the factorization.
+
+## Example
+
+The current implementation uses a real symmetric matrix and prints:
+
+- the original matrix $A$,
+- the lower triangular matrix $L$,
+- the diagonal matrix $D$,
+- the reconstructed matrix $LDL^T$.
+
+## Topics
+
+- Symmetric matrices
+- Matrix factorization
+- $LDL^T$ decomposition
+- Triangular matrices
+- Numerical linear algebra
+
+## File Structure
 
 ```text
-Projects/numerical_linear_algebra/ldlt_factorization/
-├── README.md               # Documentación y fundamentos teóricos
-└── ldlt_factorization.py   # Implementación del algoritmo y comprobación matricial
+ldlt_factorization/
+├── README.md
+└── ldlt_factorization.py
+```
+
+## Note
+
+The $LDL^T$ factorization is closely related to Cholesky factorization, but it is a distinct factorization and should not be identified simply as a "modified Cholesky" algorithm.
