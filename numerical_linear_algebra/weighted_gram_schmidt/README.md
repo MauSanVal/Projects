@@ -1,33 +1,114 @@
-# Proceso de Gram-Schmidt Ponderado (Weighted Gram-Schmidt Process)
+# Weighted Gram-Schmidt
 
-Una implementación analítica en Python utilizando **SymPy** del proceso de ortogonalización y normalización de Gram-Schmidt bajo un **producto interno ponderado**.
+This project implements the **Gram-Schmidt orthogonalization process with respect to a weighted inner product**.
 
-##  Descripción General
+The implementation uses SymPy so that the resulting orthogonal and orthonormal vectors can be computed symbolically.
 
-El algoritmo extienda el proceso tradicional de Gram-Schmidt redefiniendo el espacio euclidiano con un producto interno ponderado por una matriz diagonal de pesos positivos $w = [1, 4, 9, 16, 25]$:
+## Mathematical Background
 
-$$\langle x, y \rangle_w = \sum_{i=1}^{n} w_i x_i y_i$$
+The standard Euclidean inner product is
 
-El módulo calcula una base ortonormal $E = \{e_1, e_2, e_3, e_4, e_5\}$ exacta mediante cálculo simbólico.
+```math
+\langle x,y\rangle=x^Ty
+```
 
----
+Here, the inner product is modified using a positive weight matrix $W$:
 
-##  Formulación Matemática
+```math
+\langle x,y\rangle_W=x^TWy
+```
 
-1. **Producto Interno Ponderado:**
-   $$\langle x, y \rangle_w = x^T W y$$
+For the current example,
 
-2. **Vectores Ortogonales ($u_k$):**
-   $$u_k = v_k - \sum_{j=1}^{k-1} \frac{\langle v_k, u_j \rangle_w}{\langle u_j, u_j \rangle_w} u_j$$
+```math
+W=
+\mathrm{diag}(1,4,9,16,25)
+```
 
-3. **Vectores Ortonormales ($e_k$):**
-   $$e_k = \frac{u_k}{\sqrt{\langle u_k, u_k \rangle_w}}$$
+Equivalently,
 
----
+```math
+\langle x,y\rangle_W
+=
+\sum_{i=1}^{5}w_i x_i y_i
+```
 
-##  Estructura de la Carpeta
+The weighted inner product changes the notion of orthogonality and therefore produces a different orthogonal basis from the standard Euclidean Gram-Schmidt process.
+
+## Weighted Gram-Schmidt Process
+
+Given linearly independent vectors $v_1,\dots,v_n$, the orthogonal vectors are computed recursively by
+
+```math
+u_k
+=
+v_k
+-
+\sum_{j=1}^{k-1}
+\frac{
+\langle v_k,u_j\rangle_W
+}{
+\langle u_j,u_j\rangle_W
+}
+u_j
+```
+
+The vectors are then normalized:
+
+```math
+e_k
+=
+\frac{u_k}{
+\sqrt{\langle u_k,u_k\rangle_W}
+}
+```
+
+The resulting set
+
+```math
+\{e_1,\dots,e_n\}
+```
+
+satisfies
+
+```math
+\langle e_i,e_j\rangle_W=0
+\qquad
+(i\neq j)
+```
+
+and
+
+```math
+\langle e_i,e_i\rangle_W=1
+```
+
+## Implementation
+
+The current example uses five vectors in $\mathbb{R}^5$ and the weight vector
+
+```math
+(1,4,9,16,25)
+```
+
+SymPy is used to preserve exact symbolic expressions during orthogonalization and normalization.
+
+The program also evaluates selected weighted inner products to verify orthonormality.
+
+## Topics
+
+- Inner products
+- Weighted inner products
+- Orthogonality
+- Orthonormal bases
+- Gram-Schmidt process
+- Symbolic computation
+- Linear algebra
+
+## File Structure
 
 ```text
-Projects/numerical_linear_algebra/weighted_gram_schmidt/
-├── README.md                  # Documentación teórica
-└── weighted_gram_schmidt.py   # Algoritmo en SymPy con producto interno ponderado
+weighted_gram_schmidt/
+├── README.md
+└── weighted_gram_schmidt.py
+```
