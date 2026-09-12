@@ -27,7 +27,7 @@ The program currently provides:
 A polynomial with real coefficients is defined for every real number:
 
 ```math
-\operatorname{Dom}(p)=\mathbb{R}
+\mathrm{Dom}(p)=\mathbb{R}
 ```
 
 The project nevertheless includes a domain module as part of the general analysis workflow.
