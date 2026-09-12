@@ -1,36 +1,125 @@
-# Factorización LU (Método de Crout) y Resolución de Sistemas Lineales
+# LU Factorization — Crout Method
 
-Una implementación explícita en Python nativo (sin dependencias externas) de la **factorización LU mediante el algoritmo de Crout** para resolver sistemas de ecuaciones lineales $Ax = b$.
+This project implements the LU factorization of a square matrix using the **Crout algorithm**, together with forward and backward substitution for solving linear systems.
 
-##  Descripción General
+The implementation focuses on making the computational steps of the factorization explicit rather than relying on a library routine that performs the decomposition automatically.
 
-El programa descompone una matriz cuadrada de coeficientes $A \in \mathbb{R}^{n \times n}$ en el producto de dos matrices triangulares:
-- Una matriz triangular inferior $L$ (donde los elementos de la diagonal principal son calculados).
-- Una matriz triangular superior unitaria $U$ (donde $U_{i,i} = 1$).
+## Mathematical Background
 
-$$\mathbf{A} = \mathbf{L} \mathbf{U}$$
+Given a square matrix \(A\), the LU factorization seeks matrices \(L\) and \(U\) such that
 
-El algoritmo optimiza el espacio en memoria almacenando ambas matrices $L$ y $U$ de forma compacta en la misma matriz original durante el proceso de factorización, procediendo luego a la resolución del sistema mediante dos etapas de sustitución.
+$$
+A = LU,
+$$
 
----
+where:
 
-##  Algoritmo y Resolución
+* \(L\) is lower triangular.
+* \(U\) is upper triangular with ones on its main diagonal.
 
-Dado el sistema $\mathbf{A}\mathbf{x} = \mathbf{b}$, tras factorizar $\mathbf{A} = \mathbf{L}\mathbf{U}$ el problema se resuelve en dos pasos:
+In the Crout convention, the diagonal entries belong to \(L\), while
 
-1. **Sustitución hacia adelante (*Forward Substitution*):**
-   Resuelve el sistema triangular inferior $\mathbf{L}\mathbf{y} = \mathbf{b}$ para hallar el vector auxiliar $\mathbf{y}$:
-   $$y_i = \frac{b_i - \sum_{j=0}^{i-1} L_{i,j} y_j}{L_{i,i}}$$
+$$
+U_{ii}=1.
+$$
 
-2. **Sustitución hacia atrás (*Backward Substitution*):**
-   Resuelve el sistema triangular superior unitario $\mathbf{U}\mathbf{x} = \mathbf{y}$ para determinar el vector solución $\mathbf{x}$:
-   $$x_i = y_i - \sum_{j=i+1}^{n-1} U_{i,j} x_j$$
+Once the factorization is obtained, a linear system
 
----
+$$
+Ax=b
+$$
 
-##  Estructura del Repositorio
+can be rewritten as
+
+$$
+LUx=b.
+$$
+
+Introducing an intermediate vector \(y\),
+
+$$
+Ly=b,
+$$
+
+followed by
+
+$$
+Ux=y.
+$$
+
+This reduces the original problem to two triangular systems.
+
+## Algorithm
+
+The implementation computes the columns of \(L\) and the rows of \(U\) successively.
+
+For the entries of \(L\),
+
+$$
+L_{ij}
+=
+A_{ij}
+-
+\sum_{k=0}^{j-1}L_{ik}U_{kj},
+\qquad i\geq j.
+$$
+
+For the entries of \(U\),
+
+$$
+U_{ij}
+=
+\frac{
+A_{ij}
+-
+\sum_{k=0}^{j-1}L_{ik}U_{kj}
+}{
+L_{ii}
+},
+\qquad i<j.
+$$
+
+After the factorization, the system is solved by:
+
+### Forward substitution
+
+$$
+y_i=
+\frac{
+b_i-\sum_{j=0}^{i-1}L_{ij}y_j
+}{
+L_{ii}
+}.
+$$
+
+### Backward substitution
+
+Since \(U\) has a unit diagonal,
+
+$$
+x_i=
+y_i-\sum_{j=i+1}^{n-1}U_{ij}x_j.
+$$
+
+## Implementation
+
+The program stores the factors \(L\) and \(U\) compactly in the same matrix used during the factorization.
+
+The current example uses a \(4\times4\) system and prints the resulting factorization together with the computed solution.
+
+## Topics
+
+* LU factorization
+* Crout algorithm
+* Triangular systems
+* Forward substitution
+* Backward substitution
+* Numerical linear algebra
+
+## File Structure
 
 ```text
-Projects/numerical_linear_algebra/lu_factorization/
-├── README.md             # Documentación y fundamentos teóricos
-└── lu_factorization.py   # Implementación del método de Crout en Python puro
+lu_factorization/
+├── README.md
+└── lu_factorization.py
+```
