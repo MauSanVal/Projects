@@ -9,7 +9,7 @@ The implementation focuses on making the computational steps of the factorizatio
 Given a square matrix \(A\), the LU factorization seeks matrices \(L\) and \(U\) such that
 
 $$
-A = LU,
+A = LU
 $$
 
 where:
@@ -20,31 +20,31 @@ where:
 In the Crout convention, the diagonal entries belong to \(L\), while
 
 $$
-U_{ii}=1.
+U_{ii} = 1
 $$
 
 Once the factorization is obtained, a linear system
 
 $$
-Ax=b
+Ax = b
 $$
 
 can be rewritten as
 
 $$
-LUx=b.
+LUx = b
 $$
 
 Introducing an intermediate vector \(y\),
 
 $$
-Ly=b,
+Ly = b
 $$
 
 followed by
 
 $$
-Ux=y.
+Ux = y
 $$
 
 This reduces the original problem to two triangular systems.
@@ -60,8 +60,9 @@ L_{ij}
 =
 A_{ij}
 -
-\sum_{k=0}^{j-1}L_{ik}U_{kj},
-\qquad i\geq j.
+\sum_{k=0}^{j-1}
+L_{ik}U_{kj},
+\qquad i \geq j
 $$
 
 For the entries of \(U\),
@@ -72,11 +73,12 @@ U_{ij}
 \frac{
 A_{ij}
 -
-\sum_{k=0}^{j-1}L_{ik}U_{kj}
+\sum_{k=0}^{j-1}
+L_{ik}U_{kj}
 }{
 L_{ii}
 },
-\qquad i<j.
+\qquad i < j
 $$
 
 After the factorization, the system is solved by:
@@ -84,12 +86,16 @@ After the factorization, the system is solved by:
 ### Forward substitution
 
 $$
-y_i=
+y_i
+=
 \frac{
-b_i-\sum_{j=0}^{i-1}L_{ij}y_j
+b_i
+-
+\sum_{j=0}^{i-1}
+L_{ij}y_j
 }{
 L_{ii}
-}.
+}
 $$
 
 ### Backward substitution
@@ -97,15 +103,19 @@ $$
 Since \(U\) has a unit diagonal,
 
 $$
-x_i=
-y_i-\sum_{j=i+1}^{n-1}U_{ij}x_j.
+x_i
+=
+y_i
+-
+\sum_{j=i+1}^{n-1}
+U_{ij}x_j
 $$
 
 ## Implementation
 
 The program stores the factors \(L\) and \(U\) compactly in the same matrix used during the factorization.
 
-The current example uses a \(4\times4\) system and prints the resulting factorization together with the computed solution.
+The current example uses a \(4 \times 4\) system and prints the resulting factorization together with the computed solution.
 
 ## Topics
 
@@ -122,4 +132,3 @@ The current example uses a \(4\times4\) system and prints the resulting factoriz
 lu_factorization/
 ├── README.md
 └── lu_factorization.py
-```
