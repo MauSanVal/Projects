@@ -1,4 +1,190 @@
-# Algoritmo QR para el Cálculo de Raíces (QR Algorithm Suite)
+# QR Algorithm
+
+This project studies the **QR factorization** and the **QR algorithm for eigenvalue computation**, with applications to polynomial root finding.
+
+Two approaches to QR factorization are implemented explicitly:
+
+- Gram-Schmidt orthogonalization
+- Householder reflections
+
+The resulting QR factorization is then used within the QR iteration to approximate the eigenvalues of a matrix.
+
+## Mathematical Background
+
+### QR Factorization
+
+For a suitable matrix $A$, the QR factorization has the form
+
+```math
+A=QR
+```
+
+where:
+
+- $Q$ is orthogonal.
+- $R$ is upper triangular.
+
+### Gram-Schmidt
+
+Given the columns $a_1,\dots,a_n$ of $A$, Gram-Schmidt constructs an orthonormal basis by repeatedly removing projections onto previously computed vectors.
+
+For example,
+
+```math
+v_j
+=
+a_j
+-
+\sum_{i=1}^{j-1}
+\langle q_i,a_j\rangle q_i
+```
+
+followed by
+
+```math
+q_j=\frac{v_j}{\|v_j\|}
+```
+
+### Householder Reflections
+
+Householder transformations construct orthogonal reflections that eliminate entries below the diagonal.
+
+A Householder matrix has the form
+
+```math
+H=I-2vv^T
+```
+
+for a normalized vector $v$.
+
+Successive transformations reduce $A$ to an upper triangular matrix $R$, while the product of the transformations gives $Q$.
+
+## QR Eigenvalue Algorithm
+
+Starting from a matrix $A_0=A$, the QR iteration computes
+
+```math
+A_k-\mu_k I = Q_kR_k
+```
+
+and then forms
+
+```math
+A_{k+1}=R_kQ_k+\mu_k I
+```
+
+The shift $\mu_k$ is used to improve convergence.
+
+When the iteration converges, the resulting matrix approaches an upper triangular or Schur-like form, whose diagonal and $2\times2$ blocks contain information about the eigenvalues.
+
+## Polynomial Root Finding
+
+A particularly interesting application is the computation of polynomial roots through a **companion matrix**.
+
+For a monic polynomial
+
+```math
+p(x)=x^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0
+```
+
+the companion matrix is
+
+```math
+C=
+\begin{pmatrix}
+0&0&\cdots&0&-a_0\\
+1&0&\cdots&0&-a_1\\
+0&1&\cdots&0&-a_2\\
+\vdots&\vdots&\ddots&\vdots&\vdots\\
+0&0&\cdots&1&-a_{n-1}
+\end{pmatrix}
+```
+
+The eigenvalues of $C$ are precisely the roots of $p(x)$.
+
+Therefore, the project connects
+
+```math
+\text{polynomial}
+\rightarrow
+\text{companion matrix}
+\rightarrow
+\text{eigenvalues}
+\rightarrow
+\text{polynomial roots}
+```
+
+## Complex Eigenvalues
+
+When the computation is performed using real arithmetic, conjugate complex eigenvalue pairs can appear through $2\times2$ blocks of the final quasi-triangular matrix.
+
+For a block
+
+```math
+B=
+\begin{pmatrix}
+a&b\\
+c&d
+\end{pmatrix}
+```
+
+the associated eigenvalues satisfy
+
+```math
+\lambda^2-(a+d)\lambda+(ad-bc)=0
+```
+
+Thus,
+
+```math
+\lambda
+=
+\frac{
+(a+d)\pm\sqrt{(a+d)^2-4(ad-bc)}
+}{2}
+```
+
+## Numerical Considerations
+
+The QR algorithm is an iterative numerical method, so convergence depends on the matrix and the chosen implementation.
+
+Important considerations include:
+
+- repeated or closely spaced eigenvalues,
+- convergence rate,
+- numerical rounding,
+- the choice of shifts,
+- the stability of the QR factorization.
+
+Householder QR is generally preferred over classical Gram-Schmidt when numerical stability is important.
+
+## Implementation
+
+The project contains:
+
+```text
+qr_algorithm/
+├── README.md
+├── qr_grandschmidt.py
+├── qr_householder.py
+└── polynomial_roots_qr.py
+```
+
+`qr_grandschmidt.py` implements QR factorization using Gram-Schmidt.
+
+`qr_householder.py` implements QR factorization using Householder reflections.
+
+`polynomial_roots_qr.py` combines the QR factorization, QR iteration, companion matrices, and root extraction into a complete numerical experiment.
+
+## Topics
+
+- QR factorization
+- Gram-Schmidt orthogonalization
+- Householder reflections
+- Eigenvalue computation
+- Companion matrices
+- Polynomial root finding
+- Numerical stability# Algoritmo QR para el Cálculo de Raíces (QR Algorithm Suite)
 
 Una suite en Python para la factorización matricial $QR$ (vía **Gram-Schmidt** y **Reflexiones de Householder**) aplicada al cálculo de autovalores sobre la matriz compañera para la obtención de raíces reales y complejas de polinomios.
 
