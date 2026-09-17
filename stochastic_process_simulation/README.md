@@ -222,7 +222,7 @@ $$ W_0 = 0 $$
 
 and has independent Gaussian increments with
 
-$$ W_t-W_s \sim \mathcal{N}(0,t-s), \qquad s<t $$
+$$ W_t-W_s \sim \mathcal{N}(0,t-s),\qquad s < t $$
 
 Its simulation can therefore be constructed from independent normal random variables.
 
