@@ -66,13 +66,7 @@ This project studies the simulation and basic properties of **Brownian motion** 
 
 The notebook begins with the simulation of standard Brownian motion using independent Gaussian increments:
 
-$$
-W_{t_{k+1}}
-=
-W_{t_k}
-+
-\sqrt{\Delta t}\,Z_k,
-$$
+$$W_{t_{k+1}}=W_{t_k}+\sqrt{\Delta t}\,Z_k,$$
 
 where
 
@@ -124,22 +118,11 @@ This project studies the numerical computation of transition probability matrice
 
 Given an infinitesimal generator $Q$ and a uniformization rate $r$, the uniformized transition matrix is
 
-$$
-\hat{P}
-=
-I+\frac{Q}{r}.
-$$
+$$\hat{P}=I+\frac{Q}{r}$$
 
 The transition probability matrix of the CTMC can then be represented as
 
-$$
-P(t)
-=
-\sum_{k=0}^{\infty}
-e^{-rt}
-\frac{(rt)^k}{k!}
-\hat{P}^{\,k}.
-$$
+$$P(t) = \sum_{k=0}^{\infty}e^{-rt} \frac{(rt)^k}{k!} \hat{P}^{k}$$
 
 Since the series is infinite, the implementation requires a numerical truncation.
 
@@ -209,17 +192,11 @@ The projects in this directory cover several levels of stochastic-process modeli
 
 The absorbing Markov chain projects work with transition matrices of the form
 
-$$
-P_{ij}
-=
-\mathbb{P}(X_{n+1}=j \mid X_n=i).
-$$
+$$P_{ij} = \mathbb{P}(X_{n+1}=j \mid X_n=i)$$
 
 The evolution of the distribution of the chain can be studied through powers of the transition matrix:
 
-$$
-P^n.
-$$
+$$ P^n $$
 
 For absorbing chains, matrix decompositions provide exact expressions for quantities such as absorption probabilities and expected absorption times.
 
@@ -227,20 +204,11 @@ For absorbing chains, matrix decompositions provide exact expressions for quanti
 
 The CTMC project considers a generator matrix $Q$ and transition matrices
 
-$$
-P(t).
-$$
+$$ P(t)$$
 
 The uniformization method transforms the continuous-time problem into a weighted sum involving powers of a discrete transition matrix:
 
-$$
-P(t)
-=
-\sum_{k=0}^{\infty}
-e^{-rt}
-\frac{(rt)^k}{k!}
-\hat{P}^{\,k}.
-$$
+$$ P(t) = \sum_{k=0}^{\infty} e^{-rt} \frac{(rt)^k}{k!} \hat{P}^{k}$$
 
 This provides a computational approach for approximating the transition probabilities of a CTMC.
 
@@ -250,18 +218,11 @@ The Brownian-motion project moves from jump processes to continuous sample paths
 
 Standard Brownian motion satisfies
 
-$$
-W_0 = 0
-$$
+$$ W_0 = 0 $$
 
 and has independent Gaussian increments with
 
-$$
-W_t-W_s
-\sim
-\mathcal{N}(0,t-s),
-\qquad s<t.
-$$
+$$ W_t-W_s \sim \mathcal{N}(0,t-s), \qquad s<t $$
 
 Its simulation can therefore be constructed from independent normal random variables.
 
